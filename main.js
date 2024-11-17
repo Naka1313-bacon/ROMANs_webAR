@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { GLTFLoader } from '/libs/GLTFLoader.js';
-import { ARButton } from '/libs/ARButton.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 
 
 let camera, scene, renderer;
