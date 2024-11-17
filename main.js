@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'GLTFLoader';
 import { ARButton } from 'ARButton';
 
+
 let camera, scene, renderer;
 let reticle; // ヒットテストの結果を示すガイド用オブジェクト
 let model;
@@ -34,13 +35,11 @@ function init() {
         model = gltf.scene;
         model.visible = false; // 配置されるまで非表示
         scene.add(model);
-
-        // バウンディングボックスの計算とスケーリングの設定
         const box = new THREE.Box3().setFromObject(model);
         const size = new THREE.Vector3();
         box.getSize(size);
         const originalHeight = size.y;
-        const desiredHeight = 1; 
+        const desiredHeight = 1; // メートル単位
         const scaleRatio = desiredHeight / originalHeight;
         model.scale.set(scaleRatio, scaleRatio, scaleRatio);
     });
