@@ -85,9 +85,11 @@ function init() {
                 if (hitTestResults.length > 0) {
                     const hit = hitTestResults[0];
                     const pose = hit.getPose(referenceSpace);
-
+                    const screenshotButton = document.getElementById('screenshotButton');
+                    screenshotButton.style.display = 'block';
                     reticle.visible = true;
                     reticle.matrix.fromArray(pose.transform.matrix);
+
                 } else {
                     reticle.visible = false;
                 }
