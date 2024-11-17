@@ -24,7 +24,20 @@ function init() {
     const arButton = ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] });
     document.body.appendChild(arButton);
 
-    
+    renderer.xr.addEventListener('sessionstart', () => {
+        const screenshotButton = document.getElementById('screenshotButton');
+        screenshotButton.style.display = 'block';
+    });
+
+    // ARセッションの終了時にスクリーンショットボタンを非表示
+    renderer.xr.addEventListener('sessionend', () => {
+        const screenshotButton = document.getElementById('screenshotButton');
+        screenshotButton.style.display = 'none';
+    });
+
+    // スクリーンショットボタンの動作
+    document.getElementById('screenshotButton').addEventListener('click', takeScreenshot);
+
 
 
 
@@ -83,10 +96,10 @@ function init() {
                 if (hitTestResults.length > 0) {
                     const hit = hitTestResults[0];
                     const pose = hit.getPose(referenceSpace);
-                    const screenshotButton = document.getElementById('screenshotButton');
+                    
                     reticle.visible = true;
                     reticle.matrix.fromArray(pose.transform.matrix);
-                    screenshotButton.style.display = 'block';
+                   
 
                 } else {
                     reticle.visible = false;
@@ -105,11 +118,10 @@ function init() {
         }
     });
 
-    // スクリーンショットボタンの動作
-    document.getElementById('screenshotButton').addEventListener('click', takeScreenshot);
+    
 }
 
-// スクリーンショットを撮影する関数
+
 function takeScreenshot() {
     const screenshotButton = document.getElementById('screenshotButton');
 
@@ -118,7 +130,7 @@ function takeScreenshot() {
 
     setTimeout(() => {
         // 一時的に preserveDrawingBuffer を有効化
-        renderer.preserveDrawingBuffer = true;
+        renderer.presreenshotButton.style.display = 'block';erveDrawingBuffer = true;
 
         // 現在のシーンを画像として保存
         const dataURL = renderer.domElement.toDataURL('image/png');
