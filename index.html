@@ -6,8 +6,15 @@
     <title>WebXR AR with GLB Model</title>
     <script async src="https://unpkg.com/es-module-shims@1.5.8/dist/es-module-shims.js"></script>
 
-    <!-- Three.jsとWebXR関連スクリプト -->
-     <!-- JavaScriptコードをここに読み込む -->
+    <script type="importmap">
+      {
+          "imports": {
+              "three": "./libs/three.module.js",
+              "GLTFLoader": "./libs/GLTFLoader.js",
+              "ARButton": "./libs/ARButton.js"
+          }
+      }
+    </script>
     <style>
         body {
             margin: 0;
@@ -19,15 +26,7 @@
     </style>
 </head>
 <body>
-    <script type="importmap">
-        {
-          "imports": {
-            "three": "/libs/three.module.js",
-            "GLTFLoader": "/libs/GLTFLoader.js",
-            "ARButton": "/libs/ARButton.js"
-          }
-        }
-      </script>
+
       <script type="module" src="main.js"></script>
 </body>
 </html>
