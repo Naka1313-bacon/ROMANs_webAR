@@ -24,20 +24,9 @@ function init() {
     const arButton = ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] });
     document.body.appendChild(arButton);
 
-    // **ARセッションの開始時にスクリーンショットボタンを表示するロジック**
-    renderer.xr.addEventListener('sessionstart', () => {
-        const screenshotButton = document.getElementById('screenshotButton');
-        if (screenshotButton) {
-            screenshotButton.style.display = 'block'; // スクリーンショットボタンを表示
-        }
-    });
+    
 
-    renderer.xr.addEventListener('sessionend', () => {
-        const screenshotButton = document.getElementById('screenshotButton');
-        if (screenshotButton) {
-            screenshotButton.style.display = 'none'; // セッション終了時に非表示
-        }
-    });
+
 
     // 環境光の追加
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
@@ -94,9 +83,10 @@ function init() {
                 if (hitTestResults.length > 0) {
                     const hit = hitTestResults[0];
                     const pose = hit.getPose(referenceSpace);
-
+                    const screenshotButton = document.getElementById('screenshotButton');
                     reticle.visible = true;
                     reticle.matrix.fromArray(pose.transform.matrix);
+                    screenshotButton.style.display = 'block';
 
                 } else {
                     reticle.visible = false;
