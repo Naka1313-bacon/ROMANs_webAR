@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'GLTFLoader';
 import { ARButton } from 'ARButton';
 
-
 let camera, scene, renderer;
 let reticle; // ヒットテストの結果を示すガイド用オブジェクト
 let model;
@@ -16,7 +15,7 @@ function init() {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
 
     // レンダラーの作成
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
     document.body.appendChild(renderer.domElement);
@@ -98,4 +97,16 @@ function init() {
             model.visible = true;
         }
     });
+
+    // スクリーンショットボタンの動作
+    document.getElementById('screenshotButton').addEventListener('click', takeScreenshot);
+}
+
+// スクリーンショットを撮影する関数
+function takeScreenshot() {
+    const dataURL = renderer.domElement.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'screenshot.png';
+    link.click();
 }
