@@ -36,7 +36,12 @@ function init() {
         model.visible = false; // 配置されるまで非表示
         scene.add(model);
     });
-
+    const box = new THREE.Box3().setFromObject(model);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const originalHeight = size.y;
+    const desiredHeight = 1; // メートル単位
+    const scaleRatio = desiredHeight / originalHeight;
     // レティクルの作成
     const geometry = new THREE.RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2);
     const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
@@ -88,6 +93,7 @@ function init() {
     window.addEventListener('click', () => {
         if (reticle.visible && model) {
             model.position.setFromMatrixPosition(reticle.matrix);
+            model.scale.set(scaleRatio, scaleRatio, scaleRatio);
             model.visible = true;
         }
     });
