@@ -15,7 +15,7 @@ function init() {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
 
     // レンダラーの作成
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
     document.body.appendChild(renderer.domElement);
@@ -104,9 +104,16 @@ function init() {
 
 // スクリーンショットを撮影する関数
 function takeScreenshot() {
+    // 一時的に preserveDrawingBuffer を有効化
+    renderer.preserveDrawingBuffer = true;
+
+    // 現在のシーンを画像として保存
     const dataURL = renderer.domElement.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = dataURL;
     link.download = 'screenshot.png';
     link.click();
+
+    // preserveDrawingBuffer を無効化
+    renderer.preserveDrawingBuffer = false;
 }
