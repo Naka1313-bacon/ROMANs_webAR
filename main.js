@@ -40,7 +40,7 @@ function init() {
         const size = new THREE.Vector3();
         box.getSize(size);
         const originalHeight = size.y;
-        const desiredHeight = 1; // メートル単位
+        const desiredHeight = 1; 
         const scaleRatio = desiredHeight / originalHeight;
         model.scale.set(scaleRatio, scaleRatio, scaleRatio);
     });
