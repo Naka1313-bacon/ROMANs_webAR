@@ -3,7 +3,7 @@ import { GLTFLoader } from 'GLTFLoader';
 import { ARButton } from 'ARButton';
 
 let camera, scene, renderer;
-let reticle; // ヒットテストの結果を示すガイド用オブジェクト
+let reticle;
 let model;
 
 init();
@@ -21,7 +21,14 @@ function init() {
     document.body.appendChild(renderer.domElement);
 
     // ARボタンの追加
-    document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
+    const arButton = ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] });
+    document.body.appendChild(arButton);
+
+    // ARセッションの開始時にスクリーンショットボタンを表示
+    renderer.xr.addEventListener('sessionstart', () => {
+        const screenshotButton = document.getElementById('screenshotButton');
+        screenshotButton.style.display = 'block'; // スクリーンショットボタンを表示
+    });
 
     // 環境光の追加
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
@@ -104,16 +111,26 @@ function init() {
 
 // スクリーンショットを撮影する関数
 function takeScreenshot() {
-    // 一時的に preserveDrawingBuffer を有効化
-    renderer.preserveDrawingBuffer = true;
+    const screenshotButton = document.getElementById('screenshotButton');
 
-    // 現在のシーンを画像として保存
-    const dataURL = renderer.domElement.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.href = dataURL;
-    link.download = 'screenshot.png';
-    link.click();
+    // ボタンを一時的に非表示
+    screenshotButton.style.display = 'none';
 
-    // preserveDrawingBuffer を無効化
-    renderer.preserveDrawingBuffer = false;
+    setTimeout(() => {
+        // 一時的に preserveDrawingBuffer を有効化
+        renderer.preserveDrawingBuffer = true;
+
+        // 現在のシーンを画像として保存
+        const dataURL = renderer.domElement.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'screenshot.png';
+        link.click();
+
+        // preserveDrawingBuffer を無効化
+        renderer.preserveDrawingBuffer = false;
+
+        // ボタンを再表示
+        screenshotButton.style.display = 'block';
+    }, 100); // 短い遅延を入れることで非表示の適用を確実にする
 }
