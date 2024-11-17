@@ -9,24 +9,27 @@ let model;
 
 init();
 function init() {
-    // 基本セットアップ
+    // シーンの作成
     scene = new THREE.Scene();
+
+    // カメラの作成
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-    
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(1, 1, 1).normalize();
-    scene.add(directionalLight);
+
+    // レンダラーの作成
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.xr.enabled = true;
     document.body.appendChild(renderer.domElement);
 
-    // ARボタンを追加
+    // ARボタンの追加
     document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
 
-    // GLTFモデルを読み込む
+    // 環境光の追加
+    const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+    light.position.set(0.5, 1, 0.25);
+    scene.add(light);
+
+    // GLTFモデルの読み込み
     const loader = new GLTFLoader();
     loader.load('./assets/roman.glb', (gltf) => {
         model = gltf.scene;
@@ -34,7 +37,7 @@ function init() {
         scene.add(model);
     });
 
-    // ヒットテスト結果を表示するためのレティクルを追加
+    // レティクルの作成
     const geometry = new THREE.RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2);
     const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
     reticle = new THREE.Mesh(geometry, material);
@@ -42,7 +45,7 @@ function init() {
     reticle.visible = false;
     scene.add(reticle);
 
-    // セッション開始時にヒットテストソースを設定
+    // ヒットテストソースの設定
     let hitTestSource = null;
     let hitTestSourceRequested = false;
 
@@ -56,6 +59,10 @@ function init() {
                     session.requestHitTestSource({ space }).then((source) => {
                         hitTestSource = source;
                     });
+                });
+                session.addEventListener('end', () => {
+                    hitTestSourceRequested = false;
+                    hitTestSource = null;
                 });
                 hitTestSourceRequested = true;
             }
