@@ -59,6 +59,7 @@ function init() {
         const desiredHeight = 1; // メートル単位
         const scaleRatio = desiredHeight / originalHeight;
         model.scale.set(scaleRatio, scaleRatio, scaleRatio);
+        console.log('model loaded');
     });
 
     // レティクルの作成
