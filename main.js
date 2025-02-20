@@ -111,13 +111,15 @@ function init() {
         renderer.render(scene, camera);
     });
 
-    // レティクルをタップしたときにモデルを配置
-    window.addEventListener('click', () => {
+    const controller = renderer.xr.getController(0);
+    controller.addEventListener('select', () => {
         if (reticle.visible && model) {
             model.position.setFromMatrixPosition(reticle.matrix);
             model.visible = true;
         }
     });
+    scene.add(controller);
+    
 
     
 }
@@ -131,7 +133,7 @@ function takeScreenshot() {
 
     setTimeout(() => {
         // 一時的に preserveDrawingBuffer を有効化
-        rerenderer.preserveDrawingBuffer = true;
+        renderer.preserveDrawingBuffer = true;
 
         // 現在のシーンを画像として保存
         const dataURL = renderer.domElement.toDataURL('image/png');
