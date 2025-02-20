@@ -54,7 +54,7 @@ function init() {
   // GLTFモデルの読み込み
   const loader = new GLTFLoader();
   loader.load(
-    './assets/shiroman.glb',
+    './assets/jump.glb',
     (gltf) => {
       model = gltf.scene;
       model.visible = false; // 配置されるまで非表示
