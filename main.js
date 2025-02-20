@@ -130,7 +130,7 @@ function takeScreenshot() {
 
     setTimeout(() => {
         // 一時的に preserveDrawingBuffer を有効化
-        renderer.presreenshotButton.style.display = 'block';erveDrawingBuffer = true;
+        rerenderer.preserveDrawingBuffer = true;
 
         // 現在のシーンを画像として保存
         const dataURL = renderer.domElement.toDataURL('image/png');
