@@ -48,7 +48,7 @@ function init() {
 
     // GLTFモデルの読み込み
     const loader = new GLTFLoader();
-    loader.load('./assets/roman.glb', (gltf) => {
+    loader.load('./assets/shiroman.glb', (gltf) => {
         model = gltf.scene;
         model.visible = false; // 配置されるまで非表示
         scene.add(model);
