@@ -50,6 +50,13 @@ function init() {
     const loader = new GLTFLoader();
     loader.load('./assets/shiroman.glb', (gltf) => {
         model = gltf.scene;
+        
+        if (gltf.animations && gltf.animations.length) {
+            mixer = new THREE.AnimationMixer(model);
+            gltf.animations.forEach((clip) => {
+              mixer.clipAction(clip).play();
+            });
+          }
         model.visible = false; // 配置されるまで非表示
         scene.add(model);
         const box = new THREE.Box3().setFromObject(model);
@@ -78,7 +85,8 @@ function init() {
         if (frame) {
             const referenceSpace = renderer.xr.getReferenceSpace();
             const session = renderer.xr.getSession();
-
+            const delta = clock.getDelta();
+            if (mixer) mixer.update(delta);
             if (!hitTestSourceRequested) {
                 session.requestReferenceSpace('viewer').then((space) => {
                     session.requestHitTestSource({ space }).then((source) => {
